@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CS 1130 Examples · Ateneo de Davao University</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Introduction to Computing Website</h1>
+<p>HTML, JavaScript and CSS examples for students of the Computer Studies Division, School of Arts and Sciences, Ateneo de Davao University. Try each assignment, then open its code.</p>
+<nav role="tablist" id="tabs">
+<button role="tab" data-t="conversion">Conversion</button>
+<button role="tab" data-t="tax">Income tax</button>
+<button role="tab" data-t="loops">Loops</button>
+<button role="tab" data-t="payroll">Payroll</button>
+</nav></div></header>
+<main><div class="wrap">
+
+<section id="conversion">
+<h2>Conversion</h2><p class="lead">Temperature and length, in both directions.</p>
+<div class="box"><h3>Celsius to Fahrenheit</h3><div class="row"><label>Celsius (°C)<input id="c" type="number" step="any"></label><button class="btn" onclick="celsiusToF()">Convert</button></div><output id="c-out"></output></div>
+<div class="box"><h3>Fahrenheit to Celsius</h3><div class="row"><label>Fahrenheit (°F)<input id="f" type="number" step="any"></label><button class="btn" onclick="fahrenheitToC()">Convert</button></div><output id="f-out"></output></div>
+<div class="box"><h3>Meters to feet</h3><div class="row"><label>Meters (m)<input id="m" type="number" step="any"></label><button class="btn" onclick="metersToFeet()">Convert</button></div><output id="m-out"></output></div>
+<div class="box"><h3>Feet to meters</h3><div class="row"><label>Feet (ft)<input id="ft" type="number" step="any"></label><button class="btn" onclick="feetToMeters()">Convert</button></div><output id="ft-out"></output></div>
+<button class="btn ghost" data-fns="celsiusToF,fahrenheitToC,metersToFeet,feetToMeters">Show the code</button><pre hidden></pre>
+</section>
+
+<section id="tax" hidden>
+<h2>Income tax calculator</h2><p class="lead">Annual tax using the Philippine graduated rates (TRAIN law, 2023 onward).</p>
+<div class="box"><div class="row"><label>Annual taxable income (₱)<input id="income" type="number" min="0" step="any"></label><button class="btn" onclick="calcTax()">Compute tax</button></div><output id="tax-out"></output></div>
+<div class="box scroll"><table><tr><th>Taxable income</th><th>Tax</th></tr>
+<tr><td>Up to ₱250,000</td><td>None</td></tr>
+<tr><td>₱250,001 to ₱400,000</td><td>15% of the excess over ₱250,000</td></tr>
+<tr><td>₱400,001 to ₱800,000</td><td>₱22,500 + 20% of the excess over ₱400,000</td></tr>
+<tr><td>₱800,001 to ₱2,000,000</td><td>₱102,500 + 25% of the excess over ₱800,000</td></tr>
+<tr><td>₱2,000,001 to ₱8,000,000</td><td>₱402,500 + 30% of the excess over ₱2,000,000</td></tr>
+<tr><td>Over ₱8,000,000</td><td>₱2,202,500 + 35% of the excess over ₱8,000,000</td></tr></table></div>
+<button class="btn ghost" data-fns="taxFor,calcTax">Show the code</button><pre hidden></pre>
+</section>
+
+<section id="loops" hidden>
+<h2>First N natural numbers</h2><p class="lead">The same input, three kinds of loop.</p>
+<div class="box"><div class="row"><label>N (a positive whole number)<input id="n" type="number" min="1" step="1" value="5"></label></div></div>
+<div class="box"><h3>Factorial (while loop)</h3><button class="btn" onclick="factorial()">Compute N!</button><output id="fact-out"></output></div>
+<div class="box"><h3>Sum (do-while loop)</h3><button class="btn" onclick="sumN()">Compute the sum</button><output id="sum-out"></output></div>
+<div class="box"><h3>Average (for loop)</h3><button class="btn" onclick="averageN()">Compute the average</button><output id="avg-out"></output></div>
+<button class="btn ghost" data-fns="readN,factorial,sumN,averageN">Show the code</button><pre hidden></pre>
+</section>
+
+<section id="payroll" hidden>
+<h2>Simple payroll</h2><p class="lead">Weekly pay: the first 40 hours at the regular rate, the rest at 1.25 times. Deductions are 4.5% SSS, 2.5% PhilHealth and a flat ₱200 Pag-IBIG.</p>
+<div class="box"><div class="row"><label>Employee name<input id="emp" type="text"></label><label>Hours worked<input id="hours" type="number" min="0" step="any"></label><label>Rate per hour (₱)<input id="rate" type="number" min="0" step="any"></label></div>
+<p><button class="btn" onclick="computePayroll()">Compute payslip</button></p><output id="pay-out"></output></div>
+<button class="btn ghost" data-fns="computePayroll">Show the code</button><pre hidden></pre>
+</section>
+
+</div></main>
+<footer>CS 1130 · Computer Studies Division · School of Arts and Sciences · Ateneo de Davao University</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

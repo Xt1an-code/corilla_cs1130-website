@@ -1,0 +1,194 @@
+/* ==========================================================
+   CS 1130 Examples: modern theme
+   Edit the colors in the two blocks below.
+   Light mode = :root   |   Dark mode = the @media block
+   ========================================================== */
+
+:root {
+   --pixel: "Pixelify Sans", "Courier New", monospace;
+    --bg: #f4f6fb;          /* page background */
+  --card: #ffffff;        /* boxes */
+  --ink: #101828;         /* main text */
+  --mute: #5b6477;        /* softer text */
+  --line: #e2e6f0;        /* borders */
+  --accent: #4f46e5;      /* buttons, highlights */
+  --on-accent: #ffffff;   /* text on buttons */
+  --hero: #1e1b4b;        /* header, left color */
+  --hero-2: #312e81;      /* header, right color */
+  --code-bg: #0f172a;
+  --code: #e2e8f0;
+  --ok: #0f7a4a;          /* result text */
+  --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 4px 12px rgba(16, 24, 40, .04);
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0f1e;
+    --card: #131a30;
+    --ink: #eef1fb;
+    --mute: #9aa4bf;
+    --line: #232c4a;
+    --accent: #8b8cff;
+    --on-accent: #0b0f1e;
+    --hero: #0f1530;
+    --hero-2: #1d1b4d;
+    --code-bg: #080c18;
+    --code: #dfe6f7;
+    --ok: #4ade80;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Base ---------- */
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 17px/1.55 var(--pixel);
+}
+
+h1 {
+  font: 600 clamp(1.6rem, 4.5vw, 2.4rem)/1.2 var(--pixel);
+  margin: 0 0 8px;
+}
+
+h2 {
+  font: 600 1.5rem/1.3 var(--pixel);
+  margin: 0 0 4px;
+}
+
+pre {
+  margin: 10px 0 0;
+  background: var(--code-bg);
+  color: var(--code);
+  padding: 14px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font: 15px/1.5 var(--pixel);
+  max-width: 100%;
+}
+.lead { color: var(--mute); margin: 0 0 18px; }
+
+/* ---------- Header and tabs ---------- */
+header {
+  background: linear-gradient(135deg, var(--hero), var(--hero-2));
+  color: #ffffff;
+  padding: 28px 20px 0;
+  border-bottom: 4px solid var(--accent);
+}
+header p { margin: 0 0 20px; max-width: 64ch; color: #c7cdea; }
+
+nav { display: flex; gap: 4px; flex-wrap: wrap; }
+nav button {
+  font: inherit;
+  font-weight: 600;
+  border: 0;
+  background: transparent;
+  color: #c7cdea;
+  padding: 10px 14px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: background .15s;
+}
+nav button:hover { background: rgba(255, 255, 255, .1); }
+nav button[aria-selected="true"] { background: var(--bg); color: var(--ink); }
+
+nav button:focus-visible,
+.btn:focus-visible,
+input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Page content ---------- */
+main { padding: 24px 20px 48px; }
+section[hidden] { display: none; }
+
+.box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.box h3 { margin: 0 0 10px; font-size: 1rem; }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .9rem;
+  color: var(--mute);
+  flex: 1 1 150px;
+}
+input {
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 12px;
+  width: 100%;
+}
+input:focus { border-color: var(--accent); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  font: inherit;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: filter .15s, transform .1s;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn:active { transform: translateY(1px); }
+.btn.ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+/* ---------- Results, table, code ---------- */
+output {
+  display: block;
+  margin-top: 10px;
+  min-height: 1.5em;
+  font-weight: 600;
+  color: var(--ok);
+}
+output.err { color: #ef4444; }
+output div { font-weight: 400; color: var(--ink); }
+
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); }
+.scroll { overflow-x: auto; }
+
+pre {
+  margin: 10px 0 0;
+  background: var(--code-bg);
+  color: var(--code);
+  padding: 14px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font: 13px/1.5 "IBM Plex Mono", ui-monospace, monospace;
+  max-width: 100%;
+}
+
+footer {
+  text-align: center;
+  color: var(--mute);
+  font-size: .85rem;
+  padding: 0 20px 32px;
+}
