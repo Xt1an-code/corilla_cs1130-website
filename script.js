@@ -1,316 +1,153 @@
-/* ==========================================================
-   CS 1130 Examples: modern theme
-   Edit the colors in the two blocks below.
-   Light mode = :root   |   Dark mode = the @media block
-   ========================================================== */
+function el(id){return document.getElementById(id);}
+function say(id,text,bad){var o=el(id);o.className=bad?'err':'';o.innerHTML=text;}
+function peso(x){return '₱'+x.toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-:root {
-  --bg: #050505;
-  --card: #0d0d0d;
-  --ink: #f5f5f5;
-  --mute: #b08a8a;
-  --line: #3a0a0a;
-  --accent: #ff1a1a;
-  --on-accent: #0a0000;
-  --hero: #0a0000;
-  --hero-2: #3a0808;
-  --code-bg: #000000;
-  --code: #ff8a8a;
-  --ok: #ff5555;
-  --shadow: none;
-  --glass: rgba(255, 255, 255, .05);
-  --glass-line: rgba(255, 60, 60, .3);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, .6);
-
-  box-sizing: border-box;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  color-scheme: dark;
+function celsiusToF(){
+  var c=parseFloat(el('c').value);
+  if(isNaN(c)){say('c-out','Enter a number.',true);return;}
+  say('c-out',c+' °C = '+(c*9/5+32).toFixed(2)+' °F');
+}
+function fahrenheitToC(){
+  var f=parseFloat(el('f').value);
+  if(isNaN(f)){say('f-out','Enter a number.',true);return;}
+  say('f-out',f+' °F = '+((f-32)*5/9).toFixed(2)+' °C');
+}
+function metersToFeet(){
+  var m=parseFloat(el('m').value);
+  if(isNaN(m)){say('m-out','Enter a number.',true);return;}
+  say('m-out',m+' m = '+(m*3.28084).toFixed(2)+' ft');
+}
+function feetToMeters(){
+  var ft=parseFloat(el('ft').value);
+  if(isNaN(ft)){say('ft-out','Enter a number.',true);return;}
+  say('ft-out',ft+' ft = '+(ft/3.28084).toFixed(2)+' m');
 }
 
-
-
-/* ---------- Base ---------- */
-html { scroll-padding-top: env(safe-area-inset-top, 0px); }
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  color: var(--ink);
-  font: 16px/1.55 "IBM Plex Sans", system-ui, sans-serif;
-  background:
-    radial-gradient(600px circle at 10% 0%, rgba(255, 0, 0, .30), transparent 60%),
-radial-gradient(500px circle at 90% 20%, rgba(180, 0, 0, .25), transparent 60%),
-radial-gradient(700px circle at 50% 100%, rgba(255, 0, 0, .18), transparent 60%),
-    var(--bg);
-  background-attachment: fixed;
+function taxFor(income){
+  if(income<=250000) return 0;
+  else if(income<=400000) return (income-250000)*0.15;
+  else if(income<=800000) return 22500+(income-400000)*0.20;
+  else if(income<=2000000) return 102500+(income-800000)*0.25;
+  else if(income<=8000000) return 402500+(income-2000000)*0.30;
+  else return 2202500+(income-8000000)*0.35;
+}
+function calcTax(){
+  var income=parseFloat(el('income').value);
+  if(isNaN(income)||income<0){say('tax-out','Enter an income of 0 or more.',true);return;}
+  var tax=taxFor(income);
+  say('tax-out','Income tax: '+peso(tax)+'<div>Take-home after tax: '+peso(income-tax)+'. Effective rate: '+(income?(tax/income*100).toFixed(2):'0.00')+'%.</div>');
 }
 
-pre {
-  margin: 10px 0 0;
-  background: var(--code-bg);
-  color: var(--code);
-  padding: 14px;
-  border-radius: 10px;
-  overflow-x: auto;
-  font: 15px/1.5 var(--pixel);
-  max-width: 100%;
+function readN(){
+  var n=parseInt(el('n').value,10);
+  return (isNaN(n)||n<1)?null:n;
 }
-.lead { color: var(--mute); margin: 0 0 18px; }
-
-/* ---------- Header and tabs ---------- */
-header {
-  background: linear-gradient(135deg, var(--hero), var(--hero-2));
-  color: #ffffff;
-  padding: 28px 20px 24px;
-  border-bottom: 4px solid var(--accent);
+function factorial(){
+  var n=readN();
+  if(n===null){say('fact-out','Enter a whole number of 1 or more.',true);return;}
+  if(n>170){say('fact-out','Use N of 170 or less. Larger factorials overflow JavaScript numbers.',true);return;}
+  var result=1, i=1;
+  while(i<=n){ result=result*i; i++; }
+  say('fact-out',n+'! = '+(result>1e15?result.toExponential(6):result.toLocaleString()));
 }
-header p { margin: 0 0 20px; max-width: 64ch; color: #c7cdea; }
-
-nav {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  padding: 6px;
-  background: rgba(255, 255, 255, .12);
-  border: 1px solid rgba(255, 255, 255, .25);
-  border-radius: 20px;
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .35);
-  animation: float 6s ease-in-out infinite;
+function sumN(){
+  var n=readN();
+  if(n===null){say('sum-out','Enter a whole number of 1 or more.',true);return;}
+  var sum=0, i=1;
+  do { sum=sum+i; i++; } while(i<=n);
+  say('sum-out','1 + 2 + … + '+n+' = '+sum.toLocaleString());
 }
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
+function averageN(){
+  var n=readN();
+  if(n===null){say('avg-out','Enter a whole number of 1 or more.',true);return;}
+  var total=0;
+  for(var i=1;i<=n;i++){ total=total+i; }
+  say('avg-out','Average of 1 to '+n+' = '+(total/n).toFixed(2));
 }
 
-nav button {
-  flex: 1 1 0;
-  min-width: 140px;
-  text-align: center;
-  font: inherit;
-  font-weight: 600;
-  color: #ffffff;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 14px;
-  padding: 12px 10px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform .2s, border-color .2s;
-}
-/* the glow that follows your cursor */
-nav button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity .2s;
-  background: radial-gradient(120px circle at var(--mx, 50%) var(--my, 50%),
-              rgba(255, 255, 255, .45), transparent 70%);
-}
-nav button:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, .3); }
-nav button:hover::before { opacity: 1; }
-nav button[aria-selected="true"] {
-  background: rgba(255, 255, 255, .26);
-  border-color: rgba(255, 255, 255, .45);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5);
+function computePayroll(){
+  var name=el('emp').value.trim()||'Employee';
+  var hours=parseFloat(el('hours').value), rate=parseFloat(el('rate').value);
+  if(isNaN(hours)||isNaN(rate)||hours<0||rate<0){say('pay-out','Enter hours and rate as numbers of 0 or more.',true);return;}
+  var regular=Math.min(hours,40), overtime=Math.max(hours-40,0);
+  var regularPay=regular*rate, overtimePay=overtime*rate*1.25;
+  var gross=regularPay+overtimePay;
+  var sss=gross*0.045, philhealth=gross*0.025, pagibig=gross>0?200:0;
+  var net=gross-sss-philhealth-pagibig;
+  say('pay-out','Payslip for '+name+'<div>Regular pay ('+regular+' h): '+peso(regularPay)+'<br>Overtime pay ('+overtime+' h): '+peso(overtimePay)+'<br>Gross pay: '+peso(gross)+'<br>SSS: '+peso(sss)+' · PhilHealth: '+peso(philhealth)+' · Pag-IBIG: '+peso(pagibig)+'<br><strong>Net pay: '+peso(net)+'</strong></div>');
 }
 
-@media (prefers-reduced-motion: reduce) { nav { animation: none; } }
+/* Tabs, with the tab name kept in the page link (#conversion, #tax, #loops, #payroll) */
+var tabs=document.querySelectorAll('#tabs button');
+function showTab(){
+  var name=location.hash.slice(1)||'conversion';
+  if(!el(name)) name='conversion';
+  document.querySelectorAll('main section').forEach(function(s){s.hidden=(s.id!==name);});
+  tabs.forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===name);});
+}
+tabs.forEach(function(b){b.onclick=function(){location.hash=b.dataset.t;};});
+window.addEventListener('hashchange',showTab);
+showTab();
+document.querySelectorAll('nav button').forEach(function (b) {
+  b.addEventListener('mousemove', function (e) {
+    var r = b.getBoundingClientRect();
+    b.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    b.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+/* "Show the code" prints the real source of the functions above */
+document.querySelectorAll('[data-fns]').forEach(function(btn){
+  btn.onclick=function(){
+    var pre=btn.nextElementSibling;
+    if(pre.hidden){
+      pre.textContent=btn.dataset.fns.split(',').map(function(f){return window[f].toString();}).join('\n\n');
+      pre.hidden=false; btn.textContent='Hide the code';
+    } else { pre.hidden=true; btn.textContent='Show the code'; }
+  };
+});
+(function () {
+  if (window.introRan) return;
+  window.introRan = true;
 
-nav button:focus-visible,
-.btn:focus-visible,
-input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  function start() {
+    var intro = document.getElementById('intro');
+    var out = document.getElementById('intro-text');
+    var finished = false;
 
-/* ---------- Page content ---------- */
-main { padding: 24px 20px 48px; }
-section[hidden] { display: none; }
+    function finish() {
+      if (finished) return;
+      finished = true;
+      document.body.classList.add('loaded');
+      if (intro) {
+        intro.classList.add('done');
+        setTimeout(function () { intro.remove(); }, 700);
+      }
+    }
 
-.box {
-  background: var(--glass);
-  border: 1px solid var(--glass-line);
-  border-radius: 20px;
-  padding: 18px;
-  margin-bottom: 14px;
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, .25);
-  transition: transform .2s;
-}
-.box:hover { transform: translateY(-3px); }
+    // if the intro box is missing, just show the page
+    if (!intro || !out) { finish(); return; }
 
-.box h3 { margin: 0 0 10px; font-size: 1rem; }
+    // safety: always open the page after 5 seconds
+    setTimeout(finish, 5000);
 
-.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: .9rem;
-  color: var(--mute);
-  flex: 1 1 150px;
-}
-input {
-  font: inherit;
-  color: var(--ink);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 9px 12px;
-  width: 100%;
-}
-input:focus { border-color: var(--accent); }
+    var msg = 'ACCESSING CS 1130...';
+    var i = 0;
+    function type() {
+      if (i < msg.length) {
+        i++;
+        out.textContent = msg.slice(0, i);
+        setTimeout(type, 60);
+      } else {
+        out.textContent = 'ACCESS GRANTED';
+        setTimeout(finish, 600);
+      }
+    }
+    type();
+  }
 
-/* ---------- Buttons ---------- */
-.btn {
-  font: inherit;
-  font-weight: 600;
-  background: var(--accent);
-  color: var(--on-accent);
-  border: 0;
-  border-radius: 8px;
-  padding: 9px 16px;
-  cursor: pointer;
-  transition: filter .15s, transform .1s;
-}
-.btn:hover { filter: brightness(1.1); }
-.btn.ghost {
-  background: rgba(255, 255, 255, .06);
-  color: var(--ink);
-  border: 1px solid var(--glass-line);
-  border-radius: 14px;
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 120, 120, .3);
-}
-.btn.ghost:hover {
-  background: rgba(255, 26, 26, .18);
-  border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(255, 26, 26, .5), inset 0 1px 0 rgba(255, 150, 150, .4);
-  transform: translateY(-2px);
-}
-
-/* ---------- Results, table, code ---------- */
-output {
-  display: block;
-  margin-top: 10px;
-  min-height: 1.5em;
-  font-weight: 600;
-  color: var(--ok);
-}
-output.err { color: #ef4444; }
-output div { font-weight: 400; color: var(--ink); }
-
-table { border-collapse: collapse; width: 100%; font-size: .9rem; }
-th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); }
-.scroll { overflow-x: auto; }
-
-pre {
-  margin: 12px 0 0;
-  background: rgba(0, 0, 0, .45);
-  color: var(--code);
-  padding: 16px;
-  border: 1px solid var(--glass-line);
-  border-radius: 16px;
-  overflow-x: auto;
-  font: 15px/1.5 var(--pixel, monospace);
-  max-width: 100%;
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 120, 120, .25);
-}
-
-footer {
-  text-align: center;
-  color: var(--mute);
-  font-size: .85rem;
-  padding: 0 20px 32px;
-}
-/* ---------- Opening animation ---------- */
-#intro {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity .6s, visibility .6s;
-  animation: introfail .1s 6s forwards;   /* safety: it hides itself after 6 seconds */
-}
-#intro.done { opacity: 0; visibility: hidden; }
-
-#intro-text {
-  font: 600 clamp(1.2rem, 4vw, 2rem)/1.4 var(--pixel, monospace);
-  color: var(--accent);
-  letter-spacing: .08em;
-  text-shadow: 0 0 14px rgba(255, 26, 26, .9);
-}
-#intro-text::after {
-  content: "█";
-  margin-left: 4px;
-  animation: introblink .7s steps(1) infinite;
-}
-@keyframes introblink { 50% { opacity: 0; } }
-@keyframes introfail { to { opacity: 0; visibility: hidden; } }
-
-/* page slides up after the intro */
-body.loaded header { animation: rise .8s ease both; }
-body.loaded main   { animation: rise .8s .2s ease both; }
-@keyframes rise {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #intro { display: none; }
-  body.loaded header, body.loaded main { animation: none; }
-}
-/* ---------- Tab switch animation ---------- */
-section:not([hidden]) {
-  animation: tabIn .4s ease backwards;
-}
-section:not([hidden]) h2 {
-  animation: flicker .5s ease backwards;
-}
-section:not([hidden]) .box {
-  animation: boxIn .5s ease backwards;
-}
-section:not([hidden]) .box:nth-of-type(1) { animation-delay: .10s; }
-section:not([hidden]) .box:nth-of-type(2) { animation-delay: .20s; }
-section:not([hidden]) .box:nth-of-type(3) { animation-delay: .30s; }
-section:not([hidden]) .box:nth-of-type(4) { animation-delay: .40s; }
-section:not([hidden]) .box:nth-of-type(5) { animation-delay: .50s; }
-
-@keyframes tabIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes boxIn {
-  from { opacity: 0; transform: translateY(24px) scale(.97); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes flicker {
-  0%   { opacity: 0; }
-  20%  { opacity: 1; }
-  30%  { opacity: .3; }
-  45%  { opacity: 1; }
-  60%  { opacity: .5; }
-  100% { opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  section:not([hidden]),
-  section:not([hidden]) h2,
-  section:not([hidden]) .box { animation: none; }
-}
-pre:not([hidden]) { animation: codeIn .35s ease backwards; }
-@keyframes codeIn {
-  from { opacity: 0; transform: translateY(12px) scale(.98); }
-  to   { opacity: 1; transform: none; }
-}
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
