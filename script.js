@@ -151,3 +151,34 @@ document.querySelectorAll('[data-fns]').forEach(function(btn){
     start();
   }
 })();
+(function () {
+  var c = document.getElementById('binary');
+  if (!c || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ctx = c.getContext('2d'), size = 16, drops = [];
+
+  function resize() {
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    drops = [];
+    for (var i = 0; i < Math.floor(c.width / size); i++) drops[i] = Math.random() * -50;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    // fade the old digits so they leave a trail
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0, 0, 0, .12)';
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.globalCompositeOperation = 'source-over';
+
+    ctx.fillStyle = '#ff1a1a';
+    ctx.font = size + 'px monospace';
+    for (var i = 0; i < drops.length; i++) {
+      ctx.fillText(Math.random() > .5 ? '1' : '0', i * size, drops[i] * size);
+      if (drops[i] * size > c.height && Math.random() > .975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw, 50);
+})();
