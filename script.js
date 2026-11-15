@@ -106,26 +106,48 @@ document.querySelectorAll('[data-fns]').forEach(function(btn){
   };
 });
 (function () {
-  var intro = document.getElementById('intro');
-  var out = document.getElementById('intro-text');
-  var msg = 'ACCESSING CS Xtian Website...';
-  var i = 0;
+  if (window.introRan) return;
+  window.introRan = true;
 
-  function finish() {
-    intro.classList.add('done');
-    document.body.classList.add('loaded');
-    setTimeout(function () { intro.remove(); }, 700);
-  }
-  function type() {
-    if (i < msg.length) {
-      out.textContent += msg.charAt(i++);
-      setTimeout(type, 60);
-    } else {
-      out.textContent = 'ACCESS GRANTED';
-      setTimeout(finish, 600);
+  function start() {
+    var intro = document.getElementById('intro');
+    var out = document.getElementById('intro-text');
+    var finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      document.body.classList.add('loaded');
+      if (intro) {
+        intro.classList.add('done');
+        setTimeout(function () { intro.remove(); }, 700);
+      }
     }
+
+    // if the intro box is missing, just show the page
+    if (!intro || !out) { finish(); return; }
+
+    // safety: always open the page after 5 seconds
+    setTimeout(finish, 5000);
+
+    var msg = 'ACCESSING CS 1130...';
+    var i = 0;
+    function type() {
+      if (i < msg.length) {
+        i++;
+        out.textContent = msg.slice(0, i);
+        setTimeout(type, 60);
+      } else {
+        out.textContent = 'ACCESS GRANTED';
+        setTimeout(finish, 600);
+      }
+    }
+    type();
   }
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); }
-  else { type(); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
 })();
