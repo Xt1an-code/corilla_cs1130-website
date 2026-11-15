@@ -88,7 +88,13 @@ function showTab(){
 tabs.forEach(function(b){b.onclick=function(){location.hash=b.dataset.t;};});
 window.addEventListener('hashchange',showTab);
 showTab();
-
+document.querySelectorAll('nav button').forEach(function (b) {
+  b.addEventListener('mousemove', function (e) {
+    var r = b.getBoundingClientRect();
+    b.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    b.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
 /* "Show the code" prints the real source of the functions above */
 document.querySelectorAll('[data-fns]').forEach(function(btn){
   btn.onclick=function(){
@@ -99,3 +105,27 @@ document.querySelectorAll('[data-fns]').forEach(function(btn){
     } else { pre.hidden=true; btn.textContent='Show the code'; }
   };
 });
+(function () {
+  var intro = document.getElementById('intro');
+  var out = document.getElementById('intro-text');
+  var msg = 'ACCESSING CS Xtian Website...';
+  var i = 0;
+
+  function finish() {
+    intro.classList.add('done');
+    document.body.classList.add('loaded');
+    setTimeout(function () { intro.remove(); }, 700);
+  }
+  function type() {
+    if (i < msg.length) {
+      out.textContent += msg.charAt(i++);
+      setTimeout(type, 60);
+    } else {
+      out.textContent = 'ACCESS GRANTED';
+      setTimeout(finish, 600);
+    }
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); }
+  else { type(); }
+})();
