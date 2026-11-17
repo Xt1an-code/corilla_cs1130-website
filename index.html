@@ -4,12 +4,45 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CS 1130 Examples · Ateneo de Davao University</title>
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400&family=Fraunces:wght@600&display=swap">
+<style>
+:root{--bg:#000;--card:#0c0c0c;--ink:#f2f2f2;--mute:#9a9a9a;--line:#2a2a2a;--navy:#000;--gold:#fff;--on-navy:#fff;--code-bg:#111;--code:#e6e6e6;--ok:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+header{background:var(--navy);color:var(--on-navy);padding:28px 20px 0;border-bottom:4px solid var(--gold)}
+.wrap{max-width:880px;margin:0 auto}
+h1{font:600 clamp(1.5rem,4.5vw,2.2rem)/1.2 Fraunces,Georgia,serif;margin:0 0 8px}
+header p{margin:0 0 20px;max-width:64ch;color:#bdbdbd}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{font:inherit;font-weight:600;border:0;background:transparent;color:#bdbdbd;padding:10px 14px;border-radius:8px 8px 0 0;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--bg);color:var(--ink)}
+nav button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+main{padding:24px 20px 48px}
+section[hidden]{display:none}
+h2{font:600 1.35rem/1.3 Fraunces,Georgia,serif;margin:0 0 4px}
+.lead{color:var(--mute);margin:0 0 18px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.box h3{margin:0 0 10px;font-size:1rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+label{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--mute);flex:1 1 150px}
+input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;width:100%}
+.btn{font:inherit;font-weight:600;background:var(--navy);color:var(--on-navy);border:2px solid var(--gold);border-radius:6px;padding:8px 14px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+output{display:block;margin-top:10px;min-height:1.5em;font-weight:600;color:var(--ok)}
+output.err{color:#c0392b}
+output div{font-weight:400;color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+pre{margin:10px 0 0;background:var(--code-bg);color:var(--code);padding:14px;border-radius:8px;overflow-x:auto;font:13px/1.5 "IBM Plex Mono",ui-monospace,monospace;max-width:100%}
+footer{text-align:center;color:var(--mute);font-size:.85rem;padding:0 20px 32px}
+</style>
 </head>
 <body>
 <header><div class="wrap">
-<h1>Introduction to Computing Website</h1>
+<h1>Welcomes to Corillas Conversion Website</h1>
 <p>HTML, JavaScript and CSS examples for students of the Computer Studies Division, School of Arts and Sciences, Ateneo de Davao University. Try each assignment, then open its code.</p>
 <nav role="tablist" id="tabs">
 <button role="tab" data-t="conversion">Conversion</button>
@@ -17,12 +50,12 @@
 <button role="tab" data-t="loops">Loops</button>
 <button role="tab" data-t="payroll">Payroll</button>
 </nav></div></header>
+
 <main><div class="wrap">
-<canvas id="binary"></canvas>
+
 <section id="conversion">
 <h2>Conversion</h2><p class="lead">Temperature and length, in both directions.</p>
 <div class="box"><h3>Celsius to Fahrenheit</h3><div class="row"><label>Celsius (°C)<input id="c" type="number" step="any"></label><button class="btn" onclick="celsiusToF()">Convert</button></div><output id="c-out"></output></div>
-<div id="intro"><span id="intro-text"></span></div>
 <div class="box"><h3>Fahrenheit to Celsius</h3><div class="row"><label>Fahrenheit (°F)<input id="f" type="number" step="any"></label><button class="btn" onclick="fahrenheitToC()">Convert</button></div><output id="f-out"></output></div>
 <div class="box"><h3>Meters to feet</h3><div class="row"><label>Meters (m)<input id="m" type="number" step="any"></label><button class="btn" onclick="metersToFeet()">Convert</button></div><output id="m-out"></output></div>
 <div class="box"><h3>Feet to meters</h3><div class="row"><label>Feet (ft)<input id="ft" type="number" step="any"></label><button class="btn" onclick="feetToMeters()">Convert</button></div><output id="ft-out"></output></div>
@@ -61,6 +94,108 @@
 </div></main>
 <footer>CS 1130 · Computer Studies Division · School of Arts and Sciences · Ateneo de Davao University</footer>
 
-<script src="script.js"></script>
+<script>
+function el(id){return document.getElementById(id);}
+function say(id,text,bad){var o=el(id);o.className=bad?'err':'';o.innerHTML=text;}
+function peso(x){return '₱'+x.toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function celsiusToF(){
+  var c=parseFloat(el('c').value);
+  if(isNaN(c)){say('c-out','Enter a number.',true);return;}
+  say('c-out',c+' °C = '+(c*9/5+32).toFixed(2)+' °F');
+}
+function fahrenheitToC(){
+  var f=parseFloat(el('f').value);
+  if(isNaN(f)){say('f-out','Enter a number.',true);return;}
+  say('f-out',f+' °F = '+((f-32)*5/9).toFixed(2)+' °C');
+}
+function metersToFeet(){
+  var m=parseFloat(el('m').value);
+  if(isNaN(m)){say('m-out','Enter a number.',true);return;}
+  say('m-out',m+' m = '+(m*3.28084).toFixed(2)+' ft');
+}
+function feetToMeters(){
+  var ft=parseFloat(el('ft').value);
+  if(isNaN(ft)){say('ft-out','Enter a number.',true);return;}
+  say('ft-out',ft+' ft = '+(ft/3.28084).toFixed(2)+' m');
+}
+
+function taxFor(income){
+  if(income<=250000) return 0;
+  else if(income<=400000) return (income-250000)*0.15;
+  else if(income<=800000) return 22500+(income-400000)*0.20;
+  else if(income<=2000000) return 102500+(income-800000)*0.25;
+  else if(income<=8000000) return 402500+(income-2000000)*0.30;
+  else return 2202500+(income-8000000)*0.35;
+}
+function calcTax(){
+  var income=parseFloat(el('income').value);
+  if(isNaN(income)||income<0){say('tax-out','Enter an income of 0 or more.',true);return;}
+  var tax=taxFor(income);
+  say('tax-out','Income tax: '+peso(tax)+'<div>Take-home after tax: '+peso(income-tax)+'. Effective rate: '+(income?(tax/income*100).toFixed(2):'0.00')+'%.</div>');
+}
+
+function readN(){
+  var n=parseInt(el('n').value,10);
+  return (isNaN(n)||n<1)?null:n;
+}
+function factorial(){
+  var n=readN();
+  if(n===null){say('fact-out','Enter a whole number of 1 or more.',true);return;}
+  if(n>170){say('fact-out','Use N of 170 or less. Larger factorials overflow JavaScript numbers.',true);return;}
+  var result=1, i=1;
+  while(i<=n){ result=result*i; i++; }
+  say('fact-out',n+'! = '+(result>1e15?result.toExponential(6):result.toLocaleString()));
+}
+function sumN(){
+  var n=readN();
+  if(n===null){say('sum-out','Enter a whole number of 1 or more.',true);return;}
+  var sum=0, i=1;
+  do { sum=sum+i; i++; } while(i<=n);
+  say('sum-out','1 + 2 + … + '+n+' = '+sum.toLocaleString());
+}
+function averageN(){
+  var n=readN();
+  if(n===null){say('avg-out','Enter a whole number of 1 or more.',true);return;}
+  var total=0;
+  for(var i=1;i<=n;i++){ total=total+i; }
+  say('avg-out','Average of 1 to '+n+' = '+(total/n).toFixed(2));
+}
+
+function computePayroll(){
+  var name=el('emp').value.trim()||'Employee';
+  var hours=parseFloat(el('hours').value), rate=parseFloat(el('rate').value);
+  if(isNaN(hours)||isNaN(rate)||hours<0||rate<0){say('pay-out','Enter hours and rate as numbers of 0 or more.',true);return;}
+  var regular=Math.min(hours,40), overtime=Math.max(hours-40,0);
+  var regularPay=regular*rate, overtimePay=overtime*rate*1.25;
+  var gross=regularPay+overtimePay;
+  var sss=gross*0.045, philhealth=gross*0.025, pagibig=gross>0?200:0;
+  var net=gross-sss-philhealth-pagibig;
+  say('pay-out','Payslip for '+name+'<div>Regular pay ('+regular+' h): '+peso(regularPay)+'<br>Overtime pay ('+overtime+' h): '+peso(overtimePay)+'<br>Gross pay: '+peso(gross)+'<br>SSS: '+peso(sss)+' · PhilHealth: '+peso(philhealth)+' · Pag-IBIG: '+peso(pagibig)+'<br><strong>Net pay: '+peso(net)+'</strong></div>');
+}
+
+/* Tabs, with the tab name kept in the page link (#conversion, #tax, #loops, #payroll) */
+var tabs=document.querySelectorAll('#tabs button');
+function showTab(){
+  var name=location.hash.slice(1)||'conversion';
+  if(!el(name)) name='conversion';
+  document.querySelectorAll('main section').forEach(function(s){s.hidden=(s.id!==name);});
+  tabs.forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===name);});
+}
+tabs.forEach(function(b){b.onclick=function(){location.hash=b.dataset.t;};});
+window.addEventListener('hashchange',showTab);
+showTab();
+
+/* "Show the code" prints the real source of the functions above */
+document.querySelectorAll('[data-fns]').forEach(function(btn){
+  btn.onclick=function(){
+    var pre=btn.nextElementSibling;
+    if(pre.hidden){
+      pre.textContent=btn.dataset.fns.split(',').map(function(f){return window[f].toString();}).join('\n\n');
+      pre.hidden=false; btn.textContent='Hide the code';
+    } else { pre.hidden=true; btn.textContent='Show the code'; }
+  };
+});
+</script>
 </body>
 </html>
